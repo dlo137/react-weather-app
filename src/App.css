@@ -1,0 +1,174 @@
+/******** GENERAL ***********/
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,html{
+  overflow: hidden;
+}
+
+/*
+  div{
+  border: 1px solid red;
+}
+
+header, main, footer{
+  border: 1px solid blue;
+}
+
+*/
+
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ensure the height covers the entire viewport */
+  width: 100vw; /* Ensure the width covers the entire viewport */
+  background: url('./assets/clouds.webp') no-repeat center center;
+  background-size: cover; /* Scale the background image to cover the entire container */
+  background-attachment: fixed; 
+  overflow: hidden;
+}
+/******** WRAPPER ***********/
+.weather-info-wrapper {
+  position: relative; /* Ensure the pseudo-element is positioned relative to the wrapper */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 2rem;
+  color: white;
+  justify-content: space-between;
+  padding: 1rem 1rem 1rem 1rem;
+  align-items: center;
+  height: 85vh;
+  width: 65vw;
+  max-width: 100%; 
+  max-height: 100%;
+  border: 1px solid white;
+  z-index: 999;
+  overflow: hidden; /* Hide overflow to ensure the pseudo-element doesn't extend outside the wrapper */
+}
+
+.weather-info-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: blur(3px); /* Apply the blur effect to the background */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
+
+
+/******** HEADER ***********/
+
+header{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+.temp-icon-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.temp-number{
+  font-size: 4rem;
+  margin: 0rem;
+}
+
+.location{
+  font-size: 1rem;
+  margin: 0px;
+}
+
+.weather-conditions{
+  font-size: .75rem;
+  margin: 0px;
+}
+
+.weather-conditions-container{
+  font-weight: bold;
+}
+
+.weather-icon{
+  margin-right: .5rem;
+  font-size: 1.5rem;
+}
+/******** MAIN ***********/
+main{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 90%;
+  height: 100rem;
+  max-width: 100%; /* Ensure main does not exceed the width of the container */
+  max-height: 100%; /* Ensure main does not exceed the height of the container */
+}
+
+.left-card, .middle-card, .right-card{
+  border-radius: .7rem;
+  background: rgb(79, 79, 79, 0.5);
+  width: 32%;
+  height: 13.5rem;
+}
+
+/******** FOOTER ***********/
+footer{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+header > h1.location{
+  font-size: 4rem;
+  margin: 0px;
+}
+
+header > .high-low-data{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weather-icon-size{
+  width: auto;
+  height: 1rem;
+}
+input{
+  width: 90%;
+  border-radius: 1rem;
+  padding: .3rem .5rem;
+  background-color: transparent;
+  border: 1px solid;
+  color: white;
+  transition: .5s;
+  
+
+}
+
+input::placeholder {
+  color: white;
+}
+
+input:focus::placeholder {
+  color: transparent; /* Make the placeholder color transparent */
+}
+input:hover {
+  transform: scale(1.05); /* Scale the input field to 105% of its original size */
+}
+
+input:focus {
+  outline: none; /* Remove the default focus outline */
+}
+
