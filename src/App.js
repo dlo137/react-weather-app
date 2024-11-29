@@ -197,6 +197,13 @@ function App() {
     }
   };
 
+  // Function to handle the Enter button click event
+  const handleButtonClick = () => {
+    fetchWeatherDataByName(location); // Fetch weather data for the entered location
+    setLocation(''); // Clear the input field
+    inputRef.current.placeholder = 'Enter Location...'; // Reset the placeholder text
+  };
+
   // Function to get the weather icon class based on the weather condition
   const getWeatherIconClass = (weather) => {
     if (!weather || weather.length === 0) return '';
@@ -289,15 +296,36 @@ function App() {
 
         <main className='cards-container'>
           <div className='left-card'>
-            <p>UV Levels: {data.uvIndex !== undefined ? data.uvIndex : 'N/A'}</p>
+            <div className='card-header'>
+              <i className="wi wi-day-sunny"></i>
+              <p>UV Index</p>
+            </div>
+
+            <div>
+              {data.uvIndex !== undefined ? data.uvIndex : 'N/A'}
+            </div>
           </div>
 
           <div className='middle-card'>
-            <p>Air Quality: {data.airQuality !== undefined ? data.airQuality : 'N/A'}</p>
+            <div className='card-header'>
+              <i className="wi wi-strong-wind"></i>
+              <p>Air Quality</p>
+            </div>
+
+            <div>
+              {data.airQuality !== undefined ? data.airQuality : 'N/A'}
+            </div>
           </div>
 
           <div className='right-card'>
-            <p>Humidity: {data.humidity !== undefined ? data.humidity + '%' : 'N/A'}</p>
+            <div className='card-header'>
+              <i className="fas fa-tint"></i>
+              <p>Humidity</p>
+            </div>
+
+            <div>
+              {data.humidity !== undefined ? data.humidity + '%' : 'N/A'}
+            </div>
           </div>
         </main>
 
@@ -312,6 +340,11 @@ function App() {
             type='text' 
             className='input-box'
           />
+
+          <button onClick={handleButtonClick} className='enter-button'>
+            <i className='fas fa-search'></i>
+          </button>
+
         </footer>
       </div>
 

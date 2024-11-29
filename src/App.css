@@ -116,10 +116,18 @@ main{
 }
 
 .left-card, .middle-card, .right-card{
+  padding: .5rem;
   border-radius: .7rem;
   background: rgb(79, 79, 79, 0.5);
   width: 32%;
   height: 13.5rem;
+}
+
+.card-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 55%;
 }
 
 /******** FOOTER ***********/
@@ -127,6 +135,7 @@ footer{
   display: flex;
   justify-content: center;
   width: 100%;
+  gap: .5rem;
 }
 
 header > h1.location{
@@ -153,7 +162,6 @@ input{
   border: 1px solid;
   color: white;
   transition: .5s;
-  
 
 }
 
@@ -164,6 +172,7 @@ input::placeholder {
 input:focus::placeholder {
   color: transparent; /* Make the placeholder color transparent */
 }
+
 input:hover {
   transform: scale(1.05); /* Scale the input field to 105% of its original size */
 }
@@ -172,3 +181,19 @@ input:focus {
   outline: none; /* Remove the default focus outline */
 }
 
+.enter-button{
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 1rem;
+  padding: .3rem .5rem;
+  color: white;
+  transition: .5s;
+}
+
+.enter-button:hover {
+  transform: scale(1.05); /* Scale the input field to 105% of its original size */
+}
+
+.enter-button i {
+  font-size: .7rem;
+}
