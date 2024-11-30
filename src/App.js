@@ -143,6 +143,7 @@ function App() {
       fetchWeatherDataByName(location); // Fetch weather data for the entered location
       setLocation(''); // Clear the input field
       inputRef.current.placeholder = 'Enter Location...'; // Reset the placeholder text
+      inputRef.current.blur();      
     }
   };
 
