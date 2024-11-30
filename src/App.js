@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
 import VanillaTilt from './vanilla-tilt.js';
+import PrecipitationMap from './components/PrecipitationMap.jsx'; 
+
 
 function App() {
   // State variables to store the location input, weather data, and state information
@@ -47,7 +49,7 @@ function App() {
 
     // Load the Google Maps API script if not already loaded
     if (!window.google) {
-      loadScript(`https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`, initAutocomplete);
+      loadScript(`https://maps.googleapis.com/maps/api/js?key=AIzaSyCAOCm-I7xhWBi57uFWl3JXiDNmjSuda8o`, initAutocomplete);
     } else {
       initAutocomplete();
     }
@@ -73,7 +75,7 @@ function App() {
     }
   }, [location]);
 
-  // Function to fetch weather data using latitude and longitude
+  // FETCHING !!WEATHER DATA!! BY LATITUDE AND LONGITUDE
   const fetchWeatherData = (lat, lng) => {
     // Fetch weather data from OpenWeatherMap API using the latitude and longitude
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
@@ -81,7 +83,7 @@ function App() {
       .then(data => {
         setData(data); // Update the weather data state
         // Fetch state information using Google Maps Geocoding API
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_MAPS_API_KEY`)
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyCAOCm-I7xhWBi57uFWl3JXiDNmjSuda8o`)
           .then(response => response.json())
           .then(geoData => {
             if (geoData.results && geoData.results[0]) {
@@ -96,33 +98,6 @@ function App() {
             console.error('Error fetching state information:', error);
             setState('');
           });
-
-        // Fetch UV index, Air Quality, and Humidity data from OpenWeatherMap One Call API
-        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely,hourly,daily,alerts&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
-          .then(response => response.json())
-          .then(uvData => {
-            setData(prevData => ({
-              ...prevData,
-              uvIndex: uvData.current.uvi, // Add UV index to the weather data state
-              humidity: uvData.current.humidity, // Add Humidity to the weather data state
-            }));
-          })
-          .catch(error => {
-            console.error('Error fetching UV index and Humidity data:', error);
-          });
-
-        // Fetch Air Quality data from OpenWeatherMap Air Pollution API
-        fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
-          .then(response => response.json())
-          .then(airQualityData => {
-            setData(prevData => ({
-              ...prevData,
-              airQuality: airQualityData.list[0].main.aqi // Add Air Quality to the weather data state
-            }));
-          })
-          .catch(error => {
-            console.error('Error fetching Air Quality data:', error);
-          });
       })
       .catch(error => {
         console.error('Error fetching weather data:', error);
@@ -131,14 +106,14 @@ function App() {
       });
   };
 
-  // Function to fetch weather data using the place name
+  // FETCHING!! WEATHER DATA BY NAME!! BY LONGITUDE AND LATITUDE
   const fetchWeatherDataByName = (place) => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
       .then(response => response.json())
       .then(data => {
         setData(data); // Update the weather data state
         // Fetch state information using Google Maps Geocoding API
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${data.coord.lat},${data.coord.lon}&key=YOUR_GOOGLE_MAPS_API_KEY`)
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${data.coord.lat},${data.coord.lon}&key=AIzaSyCAOCm-I7xhWBi57uFWl3JXiDNmjSuda8o`)
           .then(response => response.json())
           .then(geoData => {
             if (geoData.results && geoData.results[0]) {
@@ -154,39 +129,13 @@ function App() {
             setState('');
           });
 
-        // Fetch UV index, Air Quality, and Humidity data from OpenWeatherMap One Call API
-        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&exclude=minutely,hourly,daily,alerts&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
-          .then(response => response.json())
-          .then(uvData => {
-            setData(prevData => ({
-              ...prevData,
-              uvIndex: uvData.current.uvi, // Add UV index to the weather data state
-              humidity: uvData.current.humidity, // Add Humidity to the weather data state
-            }));
-          })
-          .catch(error => {
-            console.error('Error fetching UV index and Humidity data:', error);
-          });
-
-        // Fetch Air Quality data from OpenWeatherMap Air Pollution API
-        fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${data.coord.lat}&lon=${data.coord.lon}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
-          .then(response => response.json())
-          .then(airQualityData => {
-            setData(prevData => ({
-              ...prevData,
-              airQuality: airQualityData.list[0].main.aqi // Add Air Quality to the weather data state
-            }));
-          })
-          .catch(error => {
-            console.error('Error fetching Air Quality data:', error);
-          });
       })
       .catch(error => {
         console.error('Error fetching weather data:', error);
         setData({});
         setState('');
       });
-  };
+  }; 
 
   // Function to handle the Enter key press event
   const handleKeyPress = (event) => {
@@ -197,12 +146,6 @@ function App() {
     }
   };
 
-  // Function to handle the Enter button click event
-  const handleButtonClick = () => {
-    fetchWeatherDataByName(location); // Fetch weather data for the entered location
-    setLocation(''); // Clear the input field
-    inputRef.current.placeholder = 'Enter Location...'; // Reset the placeholder text
-  };
 
   // Function to get the weather icon class based on the weather condition
   const getWeatherIconClass = (weather) => {
@@ -297,8 +240,8 @@ function App() {
         <main className='cards-container'>
           <div className='left-card'>
             <div className='card-header'>
-              <i className="wi wi-day-sunny"></i>
-              <p>UV Index</p>
+              <i className="fas fa-thermometer-half"></i>
+              <p>Feels Like</p>
             </div>
 
             <div>
@@ -319,12 +262,16 @@ function App() {
 
           <div className='right-card'>
             <div className='card-header'>
-              <i className="fas fa-tint"></i>
-              <p>Humidity</p>
+              <i className="fas fa-cloud-rain"></i>
+              <p>Precipitation Map</p>
             </div>
 
-            <div>
-              {data.humidity !== undefined ? data.humidity + '%' : 'N/A'}
+            <div style={{ height: '200px' }}>
+              {data.location ? (
+                <PrecipitationMap lat={data.location.lat} lon={data.location.lon} />
+              ) : (
+                'N/A'
+              )}
             </div>
           </div>
         </main>
@@ -340,10 +287,6 @@ function App() {
             type='text' 
             className='input-box'
           />
-
-          <button onClick={handleButtonClick} className='enter-button'>
-            <i className='fas fa-search'></i>
-          </button>
 
         </footer>
       </div>

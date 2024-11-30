@@ -191,7 +191,7 @@ input:focus {
 }
 
 .enter-button:hover {
-  transform: scale(1.05); /* Scale the input field to 105% of its original size */
+  transform: scale(.5); /* Scale the input field to 105% of its original size */
 }
 
 .enter-button i {
