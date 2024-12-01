@@ -266,7 +266,7 @@ function App() {
           <div className='left-card'>
             <div className='card-header'>
               <i className="fas fa-thermometer-half"></i>
-              <p>Feels Like</p>
+              <p className='feels-like-title'>Feels Like</p>
             </div>
 
             <div className='feels-like-temp'>
@@ -296,7 +296,7 @@ function App() {
           <div className='right-card'>
             <div className='card-header'>
               <i className="fas fa-cloud-rain"></i>
-              <p>High & Low</p>
+              <p className='hi-lo-title'>High & Low</p>
             </div>
 
           <div className='high-low-data'>
