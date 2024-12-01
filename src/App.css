@@ -152,12 +152,9 @@ main{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 50%;
+  font-size: 30%;
 }
 
-.hi-lo-title{
-  font-size: 20%;
-}
 
 /******** FOOTER ***********/
 footer{
