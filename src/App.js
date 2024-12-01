@@ -1,7 +1,6 @@
 import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
 import VanillaTilt from './vanilla-tilt.js';
-import PrecipitationMap from './components/PrecipitationMap.jsx'; 
 
 
 function App() {
@@ -77,26 +76,56 @@ function App() {
 
   // FETCHING !!WEATHER DATA!! BY LATITUDE AND LONGITUDE
   const fetchWeatherData = (lat, lng) => {
-    // Fetch weather data from OpenWeatherMap API using the latitude and longitude
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
-      .then(response => response.json())
+    console.log(`Fetching weather data for coordinates: ${lat}, ${lng}`); // Log coordinates
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=ee97a34ea95c2af03e9c9923cf37c23e&units=imperial`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Weather API response error: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then(data => {
-        setData(data); // Update the weather data state
-        // Fetch state information using Google Maps Geocoding API
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyCAOCm-I7xhWBi57uFWl3JXiDNmjSuda8o`)
-          .then(response => response.json())
-          .then(geoData => {
-            if (geoData.results && geoData.results[0]) {
-              const addressComponents = geoData.results[0].address_components;
-              const stateInfo = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
-              setState(stateInfo ? stateInfo.long_name : ''); // Update the state information
+        console.log('Weather Data:', data); // Log the weather data
+        if (data.main && data.weather && data.sys) {
+          setData(prevData => ({
+            ...prevData,
+            temperature: data.main.temp,
+            feelsLike: data.main.feels_like,
+            tempMax: data.main.temp_max,
+            tempMin: data.main.temp_min,
+            pressure: data.main.pressure, // Ensure pressure is set
+            weather: data.weather[0].description,
+            location: data.name,
+            state: data.sys.country,
+            sunset: data.sys.sunset, // Ensure sunset is set
+            sunrise: data.sys.sunrise, // Ensure sunrise is set
+          }));
+        } else {
+          console.error('Error: Incomplete weather data');
+        }
+
+        // Fetch Air Quality data
+        console.log(`Fetching air quality data for coordinates: ${lat}, ${lng}`); // Log coordinates for air quality
+        fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=ee97a34ea95c2af03e9c9923cf37c23e`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Air Quality API response error: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then(airQualityData => {
+            console.log('Air Quality Data:', airQualityData); // Log the air quality data
+            if (airQualityData.list && airQualityData.list[0] && airQualityData.list[0].main) {
+              setData(prevData => ({
+                ...prevData,
+                airQuality: airQualityData.list[0].main.aqi, // Ensure airQuality is set
+              }));
             } else {
-              setState('');
+              console.error('Error: Incomplete air quality data');
             }
           })
           .catch(error => {
-            console.error('Error fetching state information:', error);
-            setState('');
+            console.error('Error fetching Air Quality data:', error);
           });
       })
       .catch(error => {
@@ -229,12 +258,7 @@ function App() {
             {data.weather ? getWeatherConditions(data.weather) : 'Weather Conditions'}
           </div>
 
-          {/* High-Low 
-          <div className='high-low-data'>
-            <div className='high'> hi: {data.main ? Math.round((data.main.temp_max - 273.15) * 9/5 + 32) + '°F' : 'N/A'} </div>
-            <div className='low'> lo: {data.main ? Math.round((data.main.temp_min - 273.15) * 9/5 + 32) + '°F' : 'N/A'} </div>
-          </div>
-          */}
+
 
         </header>
 
@@ -245,35 +269,47 @@ function App() {
               <p>Feels Like</p>
             </div>
 
-            <div>
-              {data.uvIndex !== undefined ? data.uvIndex : 'N/A'}
+            <div className='feels-like-temp'>
+              {data.main ?  Math.round((data.main.feels_like - 273.15) * 9/5 + 32) + '°F' : 'N/A'}
+            </div>
+
+            <div className='feels-like-description'>
+              <p>Similar to the actual temperture.</p>
             </div>
           </div>
 
           <div className='middle-card'>
             <div className='card-header'>
-              <i className="wi wi-strong-wind"></i>
-              <p>Air Quality</p>
+              <i className="wi wi-sunset"></i>
+              <p>Sunset</p>
             </div>
 
-            <div>
-              {data.airQuality !== undefined ? data.airQuality : 'N/A'}
+            <div className='sunset-time'>
+                {data.sys ? new Date(data.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'} 
+            </div>
+
+            <div className='sunrise-time'>
+              Sunrise: {data.sys ? new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}
             </div>
           </div>
 
           <div className='right-card'>
             <div className='card-header'>
               <i className="fas fa-cloud-rain"></i>
-              <p>Precipitation Map</p>
+              <p>High & Low</p>
             </div>
 
-            <div style={{ height: '200px' }}>
-              {data.location ? (
-                <PrecipitationMap lat={data.location.lat} lon={data.location.lon} />
-              ) : (
-                'N/A'
-              )}
+          <div className='high-low-data'>
+            <div className='high'> 
+              <p>hi:</p> 
+              <div>{data.main ? Math.round((data.main.temp_max - 273.15) * 9/5 + 32) + '°F' : 'N/A'} </div>
             </div>
+            <div className='low'> 
+              <p>lo:</p>
+              <div>{data.main ? Math.round((data.main.temp_min - 273.15) * 9/5 + 32) + '°F' : 'N/A'} </div> 
+            </div>
+          </div>
+          
           </div>
         </main>
 

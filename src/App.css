@@ -121,11 +121,31 @@ main{
 }
 
 .left-card, .middle-card, .right-card{
+  display: flex;
+  flex-direction: column;
   padding: .5rem;
   border-radius: .7rem;
   background: rgb(79, 79, 79, 0.5);
   width: 32%;
   height: 13.5rem;
+}
+
+.left-card, .middle-card{
+  justify-content: space-between;
+}
+.feels-like-temp, .sunset-time, .high-low-data {
+  margin-top: .5rem;
+}
+
+.feels-like-description, .sunrise-time{
+  margin-top: auto;
+  font-size: 50%;
+}
+
+.high,.low{
+  display: flex;
+  justify-content: space-between;
+  font-size: 80%;
 }
 
 .card-header{
@@ -171,8 +191,10 @@ input{
   border: 1px solid;
   color: white;
   transition: .5s;
+  z-index: 1000;
 
 }
+
 
 input::placeholder {
   color: white;
