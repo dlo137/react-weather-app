@@ -33,7 +33,7 @@ header, main, footer{
   align-items: center;
   height: 100vh; /* Ensure the height covers the entire viewport */
   width: 100vw; /* Ensure the width covers the entire viewport */
-  background: url('./assets/clouds.webp') no-repeat center center;
+  background: url('./assets/sea.jpg') no-repeat center center;
   background-size: cover; /* Scale the background image to cover the entire container */
   background-attachment: fixed; 
   overflow: hidden;
@@ -55,19 +55,10 @@ header, main, footer{
   max-height: 100%;
   border: 1px solid white;
   z-index: 999;
+  background-color: rgba(0, 0, 0, 0.3);
   overflow: hidden; /* Hide overflow to ensure the pseudo-element doesn't extend outside the wrapper */
 }
 
-.weather-info-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  filter: blur(3px); /* Apply the blur effect to the background */
-  z-index: -1; /* Ensure the pseudo-element is behind the content */
-}
 
 
 
@@ -128,6 +119,12 @@ main{
   background: rgb(79, 79, 79, 0.5);
   width: 32%;
   height: 13.5rem;
+}
+
+.right-card{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .left-card, .middle-card{
