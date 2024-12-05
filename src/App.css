@@ -146,8 +146,17 @@ main{
 }
 
 .card-title{
-  font-size: 50%;
+  font-size: 50%!important;
 }
+
+@media (max-width: 500px) {
+  .card-title {
+    font-size: .1rem!important; /* Adjust font size for smaller screens */
+  }
+
+}
+
+
 
 .card-header{
   display: flex;
