@@ -145,6 +145,10 @@ main{
   font-size: 80%;
 }
 
+.card-title{
+  font-size: 50%;
+}
+
 .card-header{
   display: flex;
   justify-content: space-between;
